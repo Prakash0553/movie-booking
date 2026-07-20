@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import Home  from './pages/Home'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Movies from './pages/Movies'
 import MyBookings from './pages/MyBookings'
 import SeatLayout from './pages/SeatLayout'
@@ -14,13 +14,18 @@ import Dashboard from './pages/admin/Dashboard'
 import AddShows from './pages/admin/AddShows'
 import ListShows from './pages/admin/ListShows'
 import ListBookings from './pages/admin/ListBookings'
+import {useAppContext} from './context/AppContext'
+import { SignIn } from '@clerk/clerk-react'
 const App = () => {
-  const isAdmin = useLocation().pathname.startsWith('/admin')
+
+  const isAdminRoute = useLocation().pathname.startsWith('/admin')
+
+  const { user, isAdmin } = useAppContext()
   return (
     <>
 
     <Toaster/>
-    {!isAdmin && <Navbar/>}
+    {!isAdminRoute && <Navbar/>}
     <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='/movies' element={<Movies/>}/>
@@ -30,14 +35,27 @@ const App = () => {
       <Route path='/favourites' element={<Favourite/>}/>
 
       {/* Admin */}
-      <Route path='/admin/*' element={<Layout/>}>
+      <Route
+        path="/admin/*"
+        element={
+          !user ? (
+            <div className="min-h-screen flex justify-center items-center">
+              <SignIn fallbackRedirectUrl="/admin" />
+            </div>
+          ) : isAdmin ? (
+            <Layout />
+          ) : (
+            <Navigate to="/"  />
+          )
+        }
+      >
          <Route index element={<Dashboard/>}/>
          <Route path='add-shows' element={<AddShows/>}/>
          <Route path='list-shows' element={<ListShows/>}/>
          <Route path='list-bookings' element={<ListBookings/>}/>
       </Route>
     </Routes>
-    {!isAdmin && <Footer/>}
+    {!isAdminRoute && <Footer/>}
     </>
   )
 }
