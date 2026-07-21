@@ -1,5 +1,6 @@
 import { clerkClient } from "@clerk/express";
 import Movie from "../models/Movie.js";
+import Booking from "../models/Booking.js";
 
 
 // api to get user bookings
