@@ -13,6 +13,7 @@ export const getDashboardDate = async(req, res) => {
     try {
         const bookings = await Booking.find({isPaid: true})
         const activeShows = await Show.find({showDateTime: {$gte: new Date()}}).populate('movie');
+         console.log(activeShows);
 
         const totalUser = await User.countDocuments();
 
@@ -33,7 +34,7 @@ export const getDashboardDate = async(req, res) => {
 // api to get all shows
 export const getAllShows = async(req, res) => {
     try {
-        const shows = await Show.find({showDateTime: {gte: new Date()}}).populate('movie').sort({showDateTime: 1})
+        const shows = await Show.find({showDateTime: { $gte: new Date()}}).populate('movie').sort({showDateTime: 1})
 
         res.json({success: true, shows})
 
