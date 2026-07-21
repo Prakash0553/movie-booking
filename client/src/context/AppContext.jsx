@@ -9,6 +9,8 @@ export const AppContext = createContext();
 
 export const AppProvider = ({children}) => {
 
+    const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL
+
     const [isAdmin, setIsAdmin] = useState(false)
     const [shows, setShows] = useState([])
     const [faviouriteMovies, setFavouriteMovies] = useState([])
@@ -49,7 +51,7 @@ export const AppProvider = ({children}) => {
 
     const fetchFaviouriteShows = async () => {
         try {
-            const {data} = await axios.get('/api/user/faviourites', {headers: {
+            const {data} = await axios.get('/api/user/favourites', {headers: {
                 Authorization: `Bearer ${await getToken()}`}})
             if(data.success){
                 setFavouriteMovies(data.movies)
@@ -76,7 +78,7 @@ export const AppProvider = ({children}) => {
         axios,
         fetchIsAdmin,
         user, getToken, navigate, isAdmin,
-        shows, faviouriteMovies, fetchFaviouriteShows
+        shows, faviouriteMovies, fetchFaviouriteShows, image_base_url
     }
 
     return (

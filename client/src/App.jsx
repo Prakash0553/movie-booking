@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import Home  from './pages/Home'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Movies from './pages/Movies'
 import MyBookings from './pages/MyBookings'
 import SeatLayout from './pages/SeatLayout'
@@ -35,20 +35,11 @@ const App = () => {
       <Route path='/favourites' element={<Favourite/>}/>
 
       {/* Admin */}
-      <Route
-        path="/admin/*"
-        element={
-          !user ? (
-            <div className="min-h-screen flex justify-center items-center">
-              <SignIn fallbackRedirectUrl="/admin" />
-            </div>
-          ) : isAdmin ? (
-            <Layout />
-          ) : (
-            <Navigate to="/"  />
-          )
-        }
-      >
+      <Route path='/admin/*' element={user ? <Layout/> : (
+        <div className='min-h-screen flex justify-center items-center'>
+          <SignIn fallbackRedirectUrl={'/admin'}/>
+        </div>
+      )}>
          <Route index element={<Dashboard/>}/>
          <Route path='add-shows' element={<AddShows/>}/>
          <Route path='list-shows' element={<ListShows/>}/>
