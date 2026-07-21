@@ -12,16 +12,35 @@ const syncUserCreaton = inngest.createFunction(
       { event: "clerk/user.created" }
     ]
   },
-    async({event})=> {
-        const{id, first_name, last_name, email_addresses, image_url} = event.data
+    async ({ event }) => {
+    try {
+        console.log("User created event received");
+
+        const {
+            id,
+            first_name,
+            last_name,
+            email_addresses,
+            image_url
+        } = event.data;
+
         const userData = {
             _id: id,
-            email: email_addresses[0].email_addresses,
-            name: first_name +' ' + last_name,
-            image: image_url
-        }
-        await User.create(userData)
+            email: email_addresses[0].email_address,
+            name: `${first_name} ${last_name}`,
+            image: image_url,
+        };
+
+        console.log(userData);
+
+        await User.create(userData);
+
+        console.log("User saved");
+    } catch (err) {
+        console.error(err);
+        throw err;
     }
+}
 )
 
 // inngest function to delete user from database
