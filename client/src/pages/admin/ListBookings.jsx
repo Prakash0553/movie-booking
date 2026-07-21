@@ -27,8 +27,11 @@ const ListBookings = () => {
   };
 
   useEffect(()=> {
-    getAllBookings();
-  },[])
+    if(user) {
+      getAllBookings();
+    }
+  },[user])
+  
   return !isLoading ? (
     <>
       <Title text1="List" text2="Bookings"/>
