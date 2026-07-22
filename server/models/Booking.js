@@ -6,7 +6,7 @@ const bookingSchema = new mongoose.Schema(
         show: {type: String, required: true, ref: 'Show'},
         amount: {type: Number, required:true,},
         bookedSeats: {type: Array, required: true},
-        ispaid: {type: Boolean, required: true},
+        isPaid: {type: Boolean, required: true},
         paymentLink: {type: String}
     },
     {
