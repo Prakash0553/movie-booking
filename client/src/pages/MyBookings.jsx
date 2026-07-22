@@ -73,6 +73,7 @@ const MyBookings = () => {
         ))
       }
     </div>
+    
   ) 
   : <Loading /> 
 }
